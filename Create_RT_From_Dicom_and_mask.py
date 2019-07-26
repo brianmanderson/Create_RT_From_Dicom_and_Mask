@@ -116,7 +116,7 @@ class Make_RT_Data:
                 temp_color_list = copy.deepcopy(color_list)
             color_int = np.random.randint(len(temp_color_list))
             print('Writing data for ' + Name)
-            self.annotations = base_annotations[:,:,:,int(self.ROI_Names.index(Name)+1)]
+            self.annotations = base_annotations[...,int(self.ROI_Names.index(Name)+1)]
             self.annotations = self.annotations.astype('int')
 
             make_new = 1
@@ -274,6 +274,8 @@ def main(image_path='',annotations=None,Contour_Names=['Vasculature'],out_path='
     '''
     Dicom_Image_Class = Make_RT_Data()
     Dicom_Image_Class.get_images(image_path)
+    # annotations = np.zeros([Dicom_Image_Class.ArrayDicom.shape[0],512,512,2])
+    # annotations[(Dicom_Image_Class.ArrayDicom>100)[...,0]] = 1
     Dicom_Image_Class.with_annotations(annotations,Contour_Names)
     Dicom_Image_Class.write_RT_Structure(out_path)
 if __name__ == '__main__':
