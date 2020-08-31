@@ -9,6 +9,8 @@ from skimage.measure import label,regionprops,find_contours
 class Make_RT_Data:
     def __init__(self,delete_previous_rois=True):
         self.delete_previous_rois = delete_previous_rois
+        package_name = __package__.split('.')[-1]
+        self.template_dir = os.path.join(__file__[:__file__.index(package_name)],package_name,'template_RS.dcm')
 
     def get_images(self,dir_to_dicom, single_structure=True):
         self.single_structure = single_structure
@@ -40,14 +42,7 @@ class Make_RT_Data:
         self.slice_info = np.zeros([len(self.lstFilesDCM)])
         # Working on the RS structure now
         self.template = True
-        if self.template:
-            self.template_dir = os.path.join('\\\\mymdafiles','ro-admin','SHARED','Radiation physics','BMAnderson','Auto_Contour_Sites','template_RS.dcm')
-            self.template_dir = os.path.join('.','template_RS.dcm')
-            self.key_list = self.template_dir.replace('template_RS.dcm','key_list.txt')
-            if not os.path.exists(self.template_dir):
-                self.template_dir = os.path.join('..','..','Shared_Drive','Auto_Contour_Sites','template_RS.dcm')
-                self.key_list = self.template_dir.replace('template_RS.dcm','key_list.txt')
-            self.RS_struct = pydicom.read_file(self.template_dir)
+        self.RS_struct = pydicom.read_file(self.template_dir)
 
         # Get ref file
         self.RefDs = pydicom.read_file(self.lstFilesDCM[0])
