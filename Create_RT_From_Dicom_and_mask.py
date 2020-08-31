@@ -11,6 +11,7 @@ class Make_RT_Data:
         self.delete_previous_rois = delete_previous_rois
         package_name = __package__.split('.')[-1]
         self.template_dir = os.path.join(__file__[:__file__.index(package_name)],package_name,'template_RS.dcm')
+        self.key_list = self.template_dir.replace('template_RS.dcm', 'key_list.txt')
 
     def get_images(self,dir_to_dicom, single_structure=True):
         self.single_structure = single_structure
